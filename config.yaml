@@ -1,0 +1,20 @@
+app:
+  name: "go_study"
+  mode: "dev"
+  port: "8081"
+log:
+  level: "debug"
+  filename: "go_sudy.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+mysql:
+  host: "127.0.0.1"
+  port: 13306
+  user: "root"
+  password: "root1234"
+  dbname: "sql_demo"
+redis:
+  host: "127.0.0.1"
+  port: 16379
+  db: 0
