@@ -10,6 +10,9 @@ var node *sf.Node
 
 func Init(startTime string, machineID int64) (err error) {
 	var st time.Time
+	if startTime == "" {
+		startTime = time.Now().Format("2006-01-02") // 如果没有提供 startTime, 使用当前日期
+	}
 	st, err = time.Parse("2006-01-02", startTime)
 	if err != nil {
 		return
