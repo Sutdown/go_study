@@ -5,14 +5,14 @@ import (
 
 	"github.com/Sutdown/go_study/mod/logger"
 
-	"github.com/Sutdown/go_study/mod/settings"
+	"github.com/Sutdown/go_study/mod/setting"
 )
 
 // Go Web开发通用脚手架模板
 
 func main() {
 	// 1.加载配置
-	if err := settings.Init(); err != nil {
+	if err := setting.Init(); err != nil {
 		fmt.Printf("init setting failed, err:%v\n", err)
 		return
 	}
