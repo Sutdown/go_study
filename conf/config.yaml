@@ -11,11 +11,11 @@ log:
   max_backups: 7
 
 mysql:
-  host: "127.0.0.1"
+  host: "0.0.0.0"
   port: 13306
   user: "root"
   password: "root1234"
-  dbname: "sql_demo"
+  dbname: "gosql"
   max_open_conns: 200
   max_idle_conns: 50
 
