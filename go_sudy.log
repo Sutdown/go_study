@@ -1,0 +1,5 @@
+{"level":"ERROR","time":"2025-02-16T22:01:14.009+0800","caller":"mysql/mysql.go:28","msg":"connect DB failed","error":"dial tcp 0.0.0.0:13306: connectex: No connection could be made because the target machine actively refused it."}
+{"level":"ERROR","time":"2025-02-16T22:03:31.451+0800","caller":"mysql/mysql.go:28","msg":"connect DB failed","error":"dial tcp 172.16.173.104:13306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"level":"ERROR","time":"2025-02-16T22:10:52.014+0800","caller":"mysql/mysql.go:28","msg":"connect DB failed","error":"dial tcp 47.94.161.244:13306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond."}
+{"level":"INFO","time":"2025-02-16T22:50:08.929+0800","caller":"go_study/main.go:89","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2025-02-16T22:50:08.930+0800","caller":"go_study/main.go:98","msg":"Server exiting"}

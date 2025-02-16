@@ -10,6 +10,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Sutdown/go_study/mod/controller"
+	"github.com/Sutdown/go_study/mod/dao/redis"
+
 	"github.com/Sutdown/go_study/mod/pkg/snowflake"
 
 	"go.uber.org/zap"
@@ -45,11 +48,11 @@ func main() {
 	defer mysql.Close() // 程序退出关闭数据库连接
 
 	// 4. 初始化Redis连接
-	/*if err := redis.Init(); err != nil {
+	if err := redis.Init(); err != nil {
 		fmt.Printf("init redis failed, err:%v\n", err)
 		return
 	}
-	defer redis.Close()*/
+	defer redis.Close()
 
 	// 雪花算法
 	if err := snowflake.Init(setting.Conf.StartTime, setting.Conf.MachineID); err != nil {
@@ -58,10 +61,10 @@ func main() {
 	}
 
 	// 初始化gin框架内置的校验器使用的翻译器
-	/*if err := controller.InitTrans("zh"); err != nil {
+	if err := controller.InitTrans("zh"); err != nil {
 		fmt.Printf("init validator trans failed, err:%v\n", err)
 		return
-	}*/
+	}
 
 	// 5. 注册路由
 	r := router.Setup()
