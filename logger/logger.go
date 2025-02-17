@@ -9,38 +9,39 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Sutdown/go_study/mod/setting"
+
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-func Init() (err error) {
-	// 创建一个日志写入器
-	writeSyncer := getLogWriter(
-		viper.GetString("log.filename"),
-		viper.GetInt("log.max_size"),
-		viper.GetInt("log.max_backups"),
-		viper.GetInt("log.max_age"),
-	)
-
-	// 创建一个日志编码器
+// Init 初始化lg
+func Init(cfg *setting.LogConfig, mode string) (err error) {
+	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
 	encoder := getEncoder()
-
-	// 从 viper 配置中读取日志级别，并将其解析为 zapcore.Level 类型
 	var l = new(zapcore.Level)
-	err = l.UnmarshalText([]byte(viper.GetString("log level")))
+	err = l.UnmarshalText([]byte(cfg.Level))
 	if err != nil {
 		return
 	}
-
-	// 创建一个日志核心
-	core := zapcore.NewCore(encoder, writeSyncer, l)
+	var core zapcore.Core
+	if mode == "dev" {
+		// 进入开发模式，日志输出到终端
+		consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+		core = zapcore.NewTee(
+			zapcore.NewCore(encoder, writeSyncer, l),
+			zapcore.NewCore(consoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel),
+		)
+	} else {
+		core = zapcore.NewCore(encoder, writeSyncer, l)
+	}
 
 	lg := zap.New(core, zap.AddCaller())
-	// 替换zap库中全局的logger
+
 	zap.ReplaceGlobals(lg)
+	zap.L().Info("init logger success")
 	return
 }
 
