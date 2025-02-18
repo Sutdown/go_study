@@ -53,3 +53,72 @@
 snoy/snoyflake
 
 1 + 39 +8（序列号） + 16(机器id)
+
+#### 用户认证
+
+HTTP是一个无状态的协议，一次请求结束后，下次再发送服务器就不知道请求由谁发送了（一个IP不代表一个用户），在Web应用中，用户的认证和鉴权十分重要。
+
+##### Cookie-Session认证模式
+
+- 客户端使用用户名，密码验证
+- 服务端验证用户名，密码正确后生成并存储Session，将SessionID通过Cookie返回客户端
+- 客户端访问需要认证的接口时在Cookie中携带SessionID
+- 服务端通过SessionID查找Session并进行鉴权，返回客户端需要的数据
+
+但是，基于session方式存在多种问题：
+
+- 服务端需要存储session在内存中（需要快速查找），用户多时占用服务器资源较多。
+- 当需要扩展时，创建session的服务器可能不是验证session的服务器，还需要共享所有的session
+- 由于客户端使用cookie存储sessionID，跨域场景下需要进行兼容处理，同时这种方式以防范CSRF攻击
+
+##### Token认证模式
+
+基于Token的无状态会话管理，服务端不再存储信息，逻辑如下
+
+- 客户端使用用户名，密码认证
+- 服务端验证用户名密码是否正确，生成Token返回客户端
+- 客户端保存Token，访问需要认证的接口时在URL参数或者HTTP header种加入token
+- 服务端解码Token进行鉴权，返回客户端需要的数据
+
+解决了Session会话管理带来的问题
+
+- 服务端不需要存储和用户鉴权有关的信息，鉴权信息会被加密到token种，服务端只读取token包含的鉴权信息即可
+- 避免了共享session导致的不易扩展
+- 不需要依赖cookie，避免了相关的CSRF攻击
+- 使用CORS可以快速解决跨域问题
+
+
+
+#### JWT
+
+JWT（**JSON Web Token**）是一种开放标准（RFC 7519），用于安全地在各方之间传递信息。JWT 通常用于身份认证和授权场景，尤其是在 Web 应用和 API 中。它可以作为一种紧凑、URL 安全的方式来表示声明（claims），并且通常由三部分组成：头部、有效载荷和签名。
+
+##### JWT 的组成
+
+一个 JWT 通常由三部分组成
+
+1. **Header**通常包含算法和类型（JWT）（Base64 编码）：`eyJhbGciOiAiSFMyNTYiLCJ0eXAiOiAiSldUIn0`
+2. **Payload**包含用户信息或声明（如用户 ID、角色等）（Base64 编码）：`eyJzdWIiOiAiMTIzNDU2Nzg5MCIsIm5hbWUiOiAiSm9obiBEb2UiLCJpYXQiOiAxNTE2MjM5MDIyfQ`
+3. **Signature**使用密钥对前两部分进行加密，确保数据完整性f：使用密钥 `"secret"` 对前两部分进行加密。
+
+分别用点（`.`）分隔，格式如下：
+
+```css
+header.payload.signature
+```
+
+##### 特点
+
+- **自包含（Self-contained）**：JWT 将所有必要的信息（如用户身份、权限等）存储在令牌中，因此服务器无需存储会话信息。它是自包含的。
+- **无状态（Stateless）**：JWT 不需要服务器保持会话状态。服务器只需要验证 JWT 的有效性，无需存储用户的任何会话数据。
+- **紧凑性（Compact）**：由于采用了 Base64 编码，JWT 非常小且适合在 URL、HTTP 头或 Cookie 中传输。
+- **可验证性（Verifiable）**：JWT 的签名部分确保了数据的完整性和真实性。通过公共密钥或共享密钥可以验证 JWT 是否被篡改。
+- **跨域支持**：JWT 是通过 HTTP 头部传递的，可以轻松支持跨域请求，在 RESTful API 或微服务架构中非常常见。
+
+##### 缺点
+
+- **暴露信息**：JWT 的有效载荷部分没有加密，任何人都可以解码 JWT 查看其中的信息。如果需要存储敏感信息，必须使用加密的 JWT（JWE）。
+- **不可撤销**：一旦 JWT 被签发，直到它过期之前，服务器无法撤销它。因此，如果用户登出或权限改变，需要采用额外的机制来处理。
+- **过期问题**：如果没有设置合理的过期时间，JWT 可能会在长时间内有效，这增加了安全风险。
+
+
