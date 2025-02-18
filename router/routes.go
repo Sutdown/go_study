@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/Sutdown/go_study/mod/middlewares"
 	"net/http"
 
 	"github.com/Sutdown/go_study/mod/controller"
@@ -28,6 +29,12 @@ func Setup() *gin.Engine {
 		c.String(http.StatusOK, "ok")
 	})
 
+	r.Use(middlewares.JWTAuthMiddleware()) // 应用JWT认证中间件
+
+	{
+		r.GET("/community", controller.CommunityHandler)
+		r.GET("/community/:id", controller.CommunityDetailHandler)
+	}
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",
