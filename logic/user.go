@@ -3,6 +3,7 @@ package logic
 import (
 	"github.com/Sutdown/go_study/mod/dao/mysql"
 	"github.com/Sutdown/go_study/mod/models"
+	"github.com/Sutdown/go_study/mod/pkg/jwt"
 	"github.com/Sutdown/go_study/mod/pkg/snowflake"
 )
 
@@ -28,4 +29,17 @@ func SignUp(p *models.ParamSignUp) (err error) {
 	// 3.保存到数据库
 	mysql.InsertUser(&user)
 	return err
+}
+
+func Login(p *models.ParamLogin) (token string, err error) {
+	user := &models.User{
+		Username: p.Username,
+		Password: p.Password,
+	}
+	// 传递的是指针，就能拿到user.UserID
+	if err := mysql.Login(user); err != nil {
+		return "", err
+	}
+	// 生成JWT
+	return jwt.GenToken(user.UserID, user.Username)
 }
