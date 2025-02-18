@@ -26,6 +26,7 @@ var codeMsgMap = map[ResCode]string{
 	CodeInvalidToken: "无效的token",
 }
 
+// 通过状态码确认相应的字符段
 func (c ResCode) Msg() string {
 	msg, ok := codeMsgMap[c]
 	if !ok {
