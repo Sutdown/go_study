@@ -8,7 +8,7 @@ import (
 type ResponseData struct {
 	Code int         `json:"code"`
 	Msg  interface{} `json:"msg"`
-	Data interface{} `json:"data"`
+	Data interface{} `json:"data,omitempty"`
 }
 
 func ResponseError(c *gin.Context, code ResCode) {

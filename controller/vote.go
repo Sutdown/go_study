@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"github.com/Sutdown/go_study/mod/logic"
+	"github.com/Sutdown/go_study/mod/models"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"

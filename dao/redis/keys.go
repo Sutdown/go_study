@@ -6,7 +6,7 @@ package redis
 
 const (
 	Prefix             = "gostudy:"    // 项目key前缀
-	KeyPostTimeZSet = "post:time"      // zset;贴子及发帖时间
+	KeyPostTimeZSet    = "post:time"   // zset;贴子及发帖时间
 	KeyPostScoreZSet   = "post:score"  // zset;贴子及投票的分数
 	KeyPostVotedZSetPF = "post:voted:" // zset;记录用户及投票类型;参数是post id
 )
