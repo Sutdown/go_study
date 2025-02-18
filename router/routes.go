@@ -38,6 +38,8 @@ func Setup() *gin.Engine {
 		r.POST("/post", controller.CreatePostHandler)
 		r.GET("/post/:id", controller.GetPostDetailHandler)
 		r.GET("/posts/", controller.GetPostListHandler)
+		// 根据时间或分数获取帖子列表
+		r.GET("/posts2", controller.GetPostListHandler2)
 
 		// 投票
 		r.POST("/vote", controller.PostVoteController)
