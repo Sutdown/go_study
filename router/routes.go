@@ -39,6 +39,9 @@ func Setup() *gin.Engine {
 		r.GET("/post/:id", controller.GetPostDetailHandler)
 		r.GET("/posts/", controller.GetPostListHandler)
 
+		// 投票
+		r.POST("/vote", controller.PostVoteController)
+
 	}
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
