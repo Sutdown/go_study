@@ -21,10 +21,13 @@ func Setup() *gin.Engine {
 
 	// 注册业务路由
 	r.POST("/signup", controller.SignUpHandler)
+	// 登录业务路由
 	r.POST("/login", controller.LoginHandler)
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
+
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",
